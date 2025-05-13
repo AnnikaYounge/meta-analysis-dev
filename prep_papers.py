@@ -1,6 +1,6 @@
 import pandas as pd
 
-def stats_citations(csv):
+def stats_papers(csv):
     # Load CSV
     df = pd.read_csv(csv)
 
@@ -13,12 +13,16 @@ def stats_citations(csv):
 def create_central_df(csv):
     df = pd.read_csv(csv)
 
-    # only keep papers with non-null abstracts or open-access PDFs
-    df = df[((df['abstract'].notnull()) & (df['abstract'] != "")) | (df['openAccessPdf'].notnull())].copy()
-    # only keep papers with non-null influentialCitationCount
-    df = df[df['influentialCitationCount'].fillna(0) > 0].copy()
+    # only keep papers with non-null abstracts
+    df = df[df['abstract'].notnull()].copy()
 
-    # Now convert to string if needed
+    # # only keep papers with non-null abstracts or an open-access PDF
+    # df = df[((df['abstract'].notnull()) & (df['abstract'] != "")) | (df['openAccessPdf'].notnull())].copy()
+
+    # # only keep papers with non-null influentialCitationCount
+    # df = df[df['influentialCitationCount'].fillna(0) > 0].copy()
+
+    # Now convert to string
     df['title'] = df['title'].astype(str)
     df['abstract'] = df['abstract'].astype(str)
 

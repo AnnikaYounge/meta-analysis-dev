@@ -1,21 +1,27 @@
 import pandas as pd
 from bs4 import BeautifulSoup
-from scrape_abstracts import *
 from tqdm import tqdm
 import requests
 
+
+response = requests.get(url, headers=HEADERS, timeout=10, allow_redirects=True)
 def scrape_meta_tags(url):
     """Try to extract abstract from various meta tags (description, og:description)."""
+    meta_keys = [
+        {"name": "description"},
+        {"name": "og:description"},
+        {"property": "og:description"},
+        {"name": "twitter:description"},
+        {"name": "citation_abstract"},
+        {"name": "dc.description"},
+        {"property": "dc:description"},
+    ]
     try:
         response = requests.get(url, timeout=10)
         if response.status_code == 200:
             soup = BeautifulSoup(response.content, 'html.parser')
             # Try several meta tags
-            for tag in [
-                {"name": "description"},
-                {"name": "og:description"},
-                {"property": "og:description"},
-            ]:
+            for tag in meta_keys:
                 meta_tag = soup.find('meta', attrs=tag)
                 if meta_tag and meta_tag.get('content'):
                     return meta_tag['content']
@@ -46,7 +52,7 @@ def scrape_visible_abstract(url):
                             return text
             # Fallback: regex search for 'abstract' followed by text
             text = soup.get_text(separator='\n')
-            match = re.search(r'abstract[\s:]*([\s\S]{50,1000})', text, re.IGNORECASE)
+            match = re.search(r'abstract[:\s]*(.{50,2000})', text, re.IGNORECASE)
             if match:
                 candidate = match.group(1).split('\n')[0]
                 if len(candidate) > 50:

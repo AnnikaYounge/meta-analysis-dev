@@ -56,5 +56,5 @@ while True:
 
 # Save to CSV
 df = pd.DataFrame(all_results)
-df.to_csv("townsend_citations_full_metadata.csv", index=False)
+df.to_csv("townsend_citations.csv", index=False)
 print(f"Saved {len(df)} papers.")

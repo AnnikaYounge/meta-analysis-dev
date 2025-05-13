@@ -2,9 +2,7 @@ import requests
 import pandas as pd
 import time
 
-CORPUS_ID_1 = "3993822" # Corpus ID for Learning by Doing and Learning from Others
-CORPUS_ID_2 = "1881319" # Corpus ID for Learning About a New Technology: Pineapple in Ghana
-CORPUS_ID_3 = "10504196" # Corpus ID for The Diffusion of Microfinance
+#
 
 FIELDS = ",".join([
     "title", "abstract", "authors", "year", "venue", "journal", "externalIds", "url",

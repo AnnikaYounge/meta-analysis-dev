@@ -1,10 +1,10 @@
 import pandas as pd
-from scrape_abstracts02 import *
+from scrape_abstracts import *
 from tqdm import tqdm
 import requests
 
 # load dataset
-df = pd.read_csv("risk_citations_recovered.csv")
+df = pd.read_csv("data/risk_citations_recovered.csv")
 
 # get rows with missing abstracts
 missing = df[df['abstract'].isnull() | (df['abstract'].str.strip() == "")].copy()

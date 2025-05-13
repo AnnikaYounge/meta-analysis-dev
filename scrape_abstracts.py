@@ -2,6 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from time import sleep
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
@@ -102,3 +105,27 @@ def get_abstract_from_crossref(doi):
     except:
         return None
     return None
+
+def scrape_description_meta_selenium(url):
+    options = Options()
+    options.add_argument("--headless")
+    options.add_argument("--disable-gpu")
+    driver = webdriver.Chrome(options=options)
+    try:
+        driver.get(url)
+        meta = None
+        for selector in [
+            'meta[name="description"]',
+            'meta[property="og:description"]',
+            'meta[name="twitter:description"]'
+        ]:
+            elements = driver.find_elements(By.CSS_SELECTOR, selector)
+            if elements and elements[0].get_attribute("content"):
+                meta = elements[0].get_attribute("content")
+                break
+        return meta
+    except Exception as e:
+        print(f"Error scraping {url}: {e}")
+        return None
+    finally:
+        driver.quit()

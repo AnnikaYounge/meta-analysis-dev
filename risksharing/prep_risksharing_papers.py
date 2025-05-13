@@ -12,8 +12,7 @@ keywords_risk = [
 ]
 
 keywords_rural = [
-    "rural", "village", "farming", "smallholder", "agriculture", "household",
-    "community", "crop", "pastoral", "livelihood"
+    "rural", "village", "farming", "smallholder", "agriculture", "household", "crop"
 ]
 
 # Set up flags for relevant papers
